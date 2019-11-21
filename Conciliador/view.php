@@ -9,20 +9,20 @@
 
 	$usuario = $_SESSION["usuario"];
 
-	if($usuario->getRol() != "Consumidor" && $usuario->getRol() != "Administrador")
+	if($usuario->getRol() != "Conciliador" && $usuario->getRol() != "Administrador")
 		header("Location: /proj");
 
 	$aux = null;
 	$direccion = null;
 	switch($usuario->getRol()) {
-		case 'Consumidor':
+		case 'Conciliador':
 			$aux = $usuario->persona();
 			$_GET["title"] = "Perfil";
 			break;
 		default:
 			$aux = new Persona();
 			$aux->find($_GET["id"]);
-			$_GET["title"] = "Consumidor";
+			$_GET["title"] = "Conciliador";
 			break;
 	}
 	if($aux != null)

@@ -9,20 +9,20 @@
 
 	$usuario = $_SESSION["usuario"];
 
-	if($usuario->getRol() != "Consumidor" && $usuario->getRol() != "Administrador")
+	if($usuario->getRol() != "Conciliador" && $usuario->getRol() != "Administrador")
 		header("Location: /proj");
 
 	$aux = null;
 	$direccion = null;
 	switch($usuario->getRol()) {
-		case 'Consumidor':
+		case 'Conciliador':
 			$aux = $usuario->persona();
 			$_GET["title"] = "Perfil";
 			break;
 		default:
 			$aux = new Persona();
 			$aux->find($_GET["id"]);
-			$_GET["title"] = "Consumidor";
+			$_GET["title"] = "Conciliador";
 			break;
 	}
 	if($aux != null)
@@ -46,7 +46,7 @@
 						<div class="card-content">
 							<div class="content">
 								<h3 class="title is-5">Datos de sesión</h3>
-								<form action="../Controller/ConsumidorController.php" method="post">
+								<form action="../Controller/ConciliadorController.php" method="post">
 									<input type="hidden" name="action" value="update">
 									<input type="hidden" name="id" value="<?php echo $aux->getId() ?>">
 									<div class="columns">

@@ -1,6 +1,6 @@
 <?php
 	include_once("../Model/Usuario.php");
-	include_once("../Model/Persona.php");
+	include_once("../Model/Proveedor.php");
 
 	session_start();
 	if(!isset($_SESSION["usuario"]))
@@ -11,7 +11,7 @@
 	if($usuario->getRol() != "Administrador")
 		header("Location: /proj");
 
-	$_GET["title"] = "Consumidores";
+	$_GET["title"] = "Proveedores";
 ?>
 
 <!DOCTYPE html>
@@ -35,23 +35,23 @@
 								  		<thead>
 								  			<tr>
 								  				<th>ID</th>
-								  				<th>CURP</th>
-								  				<th>Nombre</th>
+								  				<th>Razon Social</th>
+								  				<th>Giro</th>
 								  				<th>Correo Electrónico</th>
 								  				<th>Acción</th>
 								  			</tr>
 								  		</thead>
 								  		<tbody>
-								  			<?php foreach(Persona::Consumidores() as $consumidor) { ?>
+								  			<?php foreach(Proveedor::get() as $consumidor) { ?>
 							  				<tr>
 							  					<td><?php echo $consumidor->getId() ?></td>
-							  					<td><?php echo $consumidor->getCurp() ?></td>
-							  					<td><?php echo $consumidor->getNombre() . " " . $consumidor->getAppaterno() ?></td>
+							  					<td><?php echo $consumidor->getRazon() ?></td>
+							  					<td><?php echo $consumidor->getGiro() ?></td>
 							  					<td><?php echo $consumidor->usuario()->getEmail() ?></td>
 							  					<td class="has-text-centered">
 							  						<a class="button is-link is-small" href="view.php?id=<?php echo $consumidor->getId() ?>"><p><i class="far fa-eye"></i> Ver</p></a>
 							  						<a class="button is-warning is-small" href="edit.php?id=<?php echo $consumidor->getId() ?>"><p><i class="fas fa-pencil-alt"></i> Editar</p></a>
-													<form action="../Controller/ConsumidorController.php" method="post" style="display: inline;">
+													<form action="../Controller/ProveedorController.php" method="post" style="display: inline;">
 														<input type="hidden" name="action" value="destroy">
 														<input type="hidden" name="id" value="<?php echo $consumidor->getId() ?>">
 							  							<button type="submit" class="button is-danger is-small"><p><i class="fas fa-times"></i> Eliminar</p></button>

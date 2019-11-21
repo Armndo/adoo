@@ -109,18 +109,32 @@
 			$con->close();
 	    }
 
-	   	public function consumidor() {
+	   	public function persona() {
 	    	$con = new Connection();
 	    	$con = $con->getConnection();
-	    	$sql = "SELECT * FROM consumidor where usuario_id = $this->id";
+	    	$sql = "SELECT * FROM persona where usuario_id = $this->id";
 	    	$rs = $con->query($sql);
-	    	$consumidor = new Consumidor();
+	    	$persona = new Persona();
 			if ($rs->num_rows > 0) {
 			    $row = $rs->fetch_assoc();
-			    $consumidor->put($row["id"], $row["curp"], $row["nombre"], $row["appaterno"], $row["apmaterno"], $row["sexo"], $row["fecha"], $row["calle"], $row["numext"], $row["numint"], $row["estado"], $row["municipio"], $row["colonia"], $row["cp"], $row["usuario_id"]);
+			    $persona->put($row["id"], $row["curp"], $row["nombre"], $row["appaterno"], $row["apmaterno"], $row["sexo"], $row["fecha"], $row["usuario_id"]);
 			}
 			$con->close();
-			return $consumidor;
+			return $persona;
+	   	}
+
+	   	public function proveedor() {
+	    	$con = new Connection();
+	    	$con = $con->getConnection();
+	    	$sql = "SELECT * FROM proveedor where usuario_id = $this->id";
+	    	$rs = $con->query($sql);
+	    	$proveedor = new Proveedor();
+			if ($rs->num_rows > 0) {
+			    $row = $rs->fetch_assoc();
+			    $proveedor->put($row["id"], $row["razon"], $row["giro"], $row["usuario_id"]);
+			}
+			$con->close();
+			return $proveedor;
 	   	}
 
 	    public function __toString() {

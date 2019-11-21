@@ -10,7 +10,7 @@
 	if($usuario->getRol() != "Administrador")
 		header("Location: /proj");
 
-	$_GET["title"] = "Consumidor";
+	$_GET["title"] = "Conciliador";
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +30,7 @@
 						<div class="card-content">
 							<div class="content">
 								<h3 class="title is-5">Datos de sesión</h3>
-								<form action="../Controller/ConsumidorController.php" method="post">
+								<form action="../Controller/ConciliadorController.php" method="post">
 									<input type="hidden" name="action" value="store">
 									<div class="columns">
 										<div class="column is-one-third">

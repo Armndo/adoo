@@ -1,5 +1,6 @@
 <?php
 	include_once("../Model/Usuario.php");
+	include_once("../Model/Proveedor.php");
 
 	session_start();
 	if(!isset($_SESSION["usuario"]))
@@ -10,7 +11,7 @@
 	if($usuario->getRol() != "Administrador")
 		header("Location: /proj");
 
-	$_GET["title"] = "Consumidor";
+	$_GET["title"] = "Proveedor";
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +31,7 @@
 						<div class="card-content">
 							<div class="content">
 								<h3 class="title is-5">Datos de sesión</h3>
-								<form action="../Controller/ConsumidorController.php" method="post">
+								<form action="../Controller/ProveedorController.php" method="post">
 									<input type="hidden" name="action" value="store">
 									<div class="columns">
 										<div class="column is-one-third">
@@ -46,48 +47,18 @@
 										  	</div>
 										</div>
 									</div>
-									<h3 class="title is-5">Datos Personales</h3>
+									<h3 class="title is-5">Datos del Proveedor</h3>
 									<div class="columns">
-										<div class="column">
-										  	<label class="label">CURP</label>
+										<div class="column is-one-third">
+										  	<label class="label">Razón social</label>
 										  	<div class="control">
-								    			<input class="input" name="curp" type="text" required="">
+								    			<input class="input" name="razon" type="text" required="">
 										  	</div>
 										</div>
-										<div class="column">
-										  	<label class="label">Nombre</label>
+										<div class="column is-one-third">
+										  	<label class="label">Giro</label>
 										  	<div class="control">
-								    			<input class="input" name="nombre" type="text" required="">
-										  	</div>
-										</div>
-										<div class="column">
-										  	<label class="label">Apellido paterno</label>
-										  	<div class="control">
-								    			<input class="input" name="appaterno" type="text" required="">
-										  	</div>
-										</div>
-									</div>
-									<div class="columns">
-										<div class="column">
-										  	<label class="label">Apellido materno</label>
-										  	<div class="control">
-								    			<input class="input" name="apmaterno" type="text">
-										  	</div>
-										</div>
-										<div class="column">
-										  	<label class="label">Sexo</label>
-										  	<div class="select" style="width: 100%;">
-										  		<select class="input" name="sexo" required="">
-										  			<option value="">Selecciona</option>
-										  			<option value="Hombre">Hombre</option>
-										  			<option value="Mujer">Mujer</option>
-										  		</select>
-										  	</div>
-										</div>
-										<div class="column">
-										  	<label class="label">Fecha de nacimiento</label>
-										  	<div class="control">
-								    			<input class="input" name="fecha" type="date" required="">
+								    			<input class="input" name="giro" type="text" required="">
 										  	</div>
 										</div>
 									</div>

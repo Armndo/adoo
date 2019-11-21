@@ -11,22 +11,22 @@
 	if(empty($_POST))
 		header("Location: /proj");
 
-	$controller = new ConsumidorController($_POST);
+	$controller = new ConciliadorController($_POST);
 
 	try {
 		$controller->{$_POST["action"]}();
 		if($_POST["action"] == "update") {
 			if($usuario->getRol() == "Administrador")
-				header("Location: /proj/Consumidor/view.php?id=" . $_POST["id"]);
+				header("Location: /proj/Conciliador/view.php?id=" . $_POST["id"]);
 			else
-				header("Location: /proj/Consumidor/view.php");
+				header("Location: /proj/Conciliador/view.php");
 		} else
-			header("Location: /proj/Consumidor");
+			header("Location: /proj/Conciliador");
 	} catch(Error $e) {
 		echo "Error, método no reconocido. <a href='/proj'>Volver</a>";
 	}
 
-	class ConsumidorController {
+	class ConciliadorController {
 
 		private $request;
 
@@ -36,7 +36,7 @@
 
 		public function store() {
 			$usuario = new Usuario();
-			$usuario->charge($this->request["email"], $this->request["password"], "Consumidor");
+			$usuario->charge($this->request["email"], $this->request["password"], "Conciliador");
 			$usuario->commit();
 			$persona = new Persona();
 			$persona->charge($this->request["curp"], $this->request["nombre"], $this->request["appaterno"], $this->request["apmaterno"], $this->request["sexo"], $this->request["fecha"], $usuario->getId());

@@ -1,6 +1,6 @@
 <?php
 	include_once("../Model/Usuario.php");
-	include_once("../Model/Persona.php");
+	include_once("../Model/Proveedor.php");
 	include_once("../Model/Direccion.php");
 
 	session_start();
@@ -9,20 +9,20 @@
 
 	$usuario = $_SESSION["usuario"];
 
-	if($usuario->getRol() != "Consumidor" && $usuario->getRol() != "Administrador")
+	if($usuario->getRol() != "Proveedor" && $usuario->getRol() != "Administrador")
 		header("Location: /proj");
 
 	$aux = null;
 	$direccion = null;
 	switch($usuario->getRol()) {
-		case 'Consumidor':
-			$aux = $usuario->persona();
+		case 'Proveedor':
+			$aux = $usuario->proveedor();
 			$_GET["title"] = "Perfil";
 			break;
 		default:
-			$aux = new Persona();
+			$aux = new Proveedor();
 			$aux->find($_GET["id"]);
-			$_GET["title"] = "Consumidor";
+			$_GET["title"] = "Proveedor";
 			break;
 	}
 	if($aux != null)
@@ -60,48 +60,18 @@
 									  	</div>
 									</div>
 								</div>
-								<h3 class="title is-5">Datos Personales</h3>
+								<h3 class="title is-5">Datos del Proveedor</h3>
 								<div class="columns">
-									<div class="column">
-									  	<label class="label">CURP</label>
+									<div class="column is-one-third">
+									  	<label class="label">Razón social</label>
 									  	<div class="control">
-							    			<input class="input" name="curp" type="text" required="" disabled="" value="<?php echo $aux->getCurp() ?>">
+							    			<input class="input" name="razon" type="text" required="" disabled="" value="<?php echo $aux->getRazon() ?>">
 									  	</div>
 									</div>
-									<div class="column">
-									  	<label class="label">Nombre</label>
+									<div class="column is-one-third">
+									  	<label class="label">Giro</label>
 									  	<div class="control">
-							    			<input class="input" name="nombre" type="text" required="" disabled="" value="<?php echo $aux->getNombre() ?>">
-									  	</div>
-									</div>
-									<div class="column">
-									  	<label class="label">Apellido paterno</label>
-									  	<div class="control">
-							    			<input class="input" name="appaterno" type="text" required="" disabled="" value="<?php echo $aux->getAppaterno() ?>">
-									  	</div>
-									</div>
-								</div>
-								<div class="columns">
-									<div class="column">
-									  	<label class="label">Apellido materno</label>
-									  	<div class="control">
-							    			<input class="input" name="apmaterno" type="text" disabled="" value="<?php echo $aux->getApmaterno() != null ? $aux->getApmaterno() : "N/A" ?>">
-									  	</div>
-									</div>
-									<div class="column">
-									  	<label class="label">Sexo</label>
-									  	<div class="" style="width: 100%;">
-									  		<select class="input" name="sexo" required="" disabled="">
-									  			<option value="">Selecciona</option>
-									  			<option value="Hombre"<?php echo $aux->getSexo() == "Hombre" ? " selected=''" : "" ?>>Hombre</option>
-									  			<option value="Mujer"<?php echo $aux->getSexo() == "Mujer" ? " selected=''" : "" ?>>Mujer</option>
-									  		</select>
-									  	</div>
-									</div>
-									<div class="column">
-									  	<label class="label">Fecha de nacimiento</label>
-									  	<div class="control">
-							    			<input class="input" name="fecha" type="date" required="" disabled="" value="<?php echo $aux->getFecha() ?>">
+							    			<input class="input" name="giro" type="text" required="" disabled="" value="<?php echo $aux->getGiro() ?>">
 									  	</div>
 									</div>
 								</div>
@@ -191,7 +161,7 @@
 								<div class="columns">
 									<div class="column">
 									  	<div class="control has-text-right">
-									  		<a class="button is-warning" href="edit.php<?php echo ($usuario->getRol() == 'Administrador' ? '?id='. $aux->getId() : '') ?>">
+									  		<a class="button is-warning" href="edit.php?id=<?php echo $aux->getId() ?>">
 									  			<p><i class="fas fa-pencil-alt"></i> Editar</p>
 									  		</a>
 									  	</div>

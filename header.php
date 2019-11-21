@@ -13,41 +13,58 @@
 						<p><i class="far fa-file"></i> Inconformidades</p>
 					</a>
 					<div class="navbar-dropdown">
-						<a class="navbar-item" href="/proj/Inconformidades">
+						<a class="navbar-item" href="/proj/Inconformidad">
 							<p><i class="fas fa-list-ul"></i> Lista</p>
 						</a>
-						<a class="navbar-item" href="/proj/Inconformidades/create.php">
-							<p><i class="fas fa-plus"></i> Crear</p>
+						<a class="navbar-item" href="/proj/Inconformidad/create.php">
+							<p><i class="fas fa-plus"></i> Generar</p>
 						</a>
 					</div>
 				</div>
 				<?php } else if($usuario->getRol() == "Proveedor" || $usuario->getRol() == "Conciliador") { ?>
-				<a class="navbar-item" href="/proj/Inconformidades">
+				<a class="navbar-item" href="/proj/Inconformidad">
 					<p><i class="far fa-file"></i> Inconformidades</p>
 				</a>
 				<?php } if($usuario->getRol() != "Administrador") {?>
-				<a class="navbar-item" href="/proj/Audiencias">
+				<?php if($usuario->getRol() == "Conciliador") {?>
+				<div class="navbar-item has-dropdown is-hoverable">
+					<a class="navbar-link">
+						<p><i class="fas fa-headset"></i> Audiencias</p>
+					</a>
+					<div class="navbar-dropdown">
+						<a class="navbar-item" href="/proj/Audiencia">
+							<p><i class="fas fa-list-ul"></i> Lista</p>
+						</a>
+						<a class="navbar-item" href="/proj/Audiencia/create.php">
+							<p><i class="fas fa-plus"></i> Generar</p>
+						</a>
+					</div>
+				</div>
+				<?php } else { ?>
+				<a class="navbar-item" href="/proj/Audiencia">
 					<p><i class="fas fa-headset"></i> Audiencias</p>
 				</a>
-				<a class="navbar-item" href="/proj/Consumidor/view.php">
+				<?php } ?>
+				<a class="navbar-item" href="/proj/<?php echo $usuario->getRol() ?>/view.php">
 					<p>
 						<?php
+							$lel = "";
 							switch($usuario->getRol()) {
 								case 'Consumidor':
-									echo '<i class="fas fa-user"></i>';
+									$lel = "user";
 									break;
 								case 'Proveedor':
-									echo '<i class="fas fa-truck"></i>';
+									$lel = "truck";
 									break;
 								case 'Conciliador':
-									echo '<i class="fas fa-user-tie"></i>';
+									$lel = "user-tie";
 									break;
 								default:
-									echo '<i class="fas fa-user"></i>';
+									$lel = "user";
 									break;
 					  		}
 						?>
-						 Perfil
+						 <i class="fas fa-<?php echo $lel ?>"></i> Perfil
 					</p>
 				</a>
 				<?php } if($usuario->getRol() == "Administrador") { ?>
@@ -60,6 +77,32 @@
 							<p><i class="fas fa-list-ul"></i> Lista</p>
 						</a>
 						<a class="navbar-item" href="/proj/Consumidor/create.php">
+							<p><i class="fas fa-plus"></i> Registrar</p>
+						</a>
+					</div>
+				</div>
+				<div class="navbar-item has-dropdown is-hoverable">
+					<a class="navbar-link">
+						<p><i class="fas fa-truck"></i> Proveedores</p>
+					</a>
+					<div class="navbar-dropdown">
+						<a class="navbar-item" href="/proj/Proveedor">
+							<p><i class="fas fa-list-ul"></i> Lista</p>
+						</a>
+						<a class="navbar-item" href="/proj/Proveedor/create.php">
+							<p><i class="fas fa-plus"></i> Registrar</p>
+						</a>
+					</div>
+				</div>
+				<div class="navbar-item has-dropdown is-hoverable">
+					<a class="navbar-link">
+						<p><i class="fas fa-user-tie"></i> Conciliadores</p>
+					</a>
+					<div class="navbar-dropdown">
+						<a class="navbar-item" href="/proj/Conciliador">
+							<p><i class="fas fa-list-ul"></i> Lista</p>
+						</a>
+						<a class="navbar-item" href="/proj/Conciliador/create.php">
 							<p><i class="fas fa-plus"></i> Registrar</p>
 						</a>
 					</div>

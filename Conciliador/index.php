@@ -11,7 +11,7 @@
 	if($usuario->getRol() != "Administrador")
 		header("Location: /proj");
 
-	$_GET["title"] = "Consumidores";
+	$_GET["title"] = "Conciliadores";
 ?>
 
 <!DOCTYPE html>
@@ -42,18 +42,18 @@
 								  			</tr>
 								  		</thead>
 								  		<tbody>
-								  			<?php foreach(Persona::Consumidores() as $consumidor) { ?>
+								  			<?php foreach(Persona::Conciliadores() as $conciliador) { ?>
 							  				<tr>
-							  					<td><?php echo $consumidor->getId() ?></td>
-							  					<td><?php echo $consumidor->getCurp() ?></td>
-							  					<td><?php echo $consumidor->getNombre() . " " . $consumidor->getAppaterno() ?></td>
-							  					<td><?php echo $consumidor->usuario()->getEmail() ?></td>
+							  					<td><?php echo $conciliador->getId() ?></td>
+							  					<td><?php echo $conciliador->getCurp() ?></td>
+							  					<td><?php echo $conciliador->getNombre() . " " . $conciliador->getAppaterno() ?></td>
+							  					<td><?php echo $conciliador->usuario()->getEmail() ?></td>
 							  					<td class="has-text-centered">
-							  						<a class="button is-link is-small" href="view.php?id=<?php echo $consumidor->getId() ?>"><p><i class="far fa-eye"></i> Ver</p></a>
-							  						<a class="button is-warning is-small" href="edit.php?id=<?php echo $consumidor->getId() ?>"><p><i class="fas fa-pencil-alt"></i> Editar</p></a>
-													<form action="../Controller/ConsumidorController.php" method="post" style="display: inline;">
+							  						<a class="button is-link is-small" href="view.php?id=<?php echo $conciliador->getId() ?>"><p><i class="far fa-eye"></i> Ver</p></a>
+							  						<a class="button is-warning is-small" href="edit.php?id=<?php echo $conciliador->getId() ?>"><p><i class="fas fa-pencil-alt"></i> Editar</p></a>
+													<form action="../Controller/ConciliadorController.php" method="post" style="display: inline;">
 														<input type="hidden" name="action" value="destroy">
-														<input type="hidden" name="id" value="<?php echo $consumidor->getId() ?>">
+														<input type="hidden" name="id" value="<?php echo $conciliador->getId() ?>">
 							  							<button type="submit" class="button is-danger is-small"><p><i class="fas fa-times"></i> Eliminar</p></button>
 						  							</form>
 							  					</td>

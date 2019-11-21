@@ -1,6 +1,6 @@
 <?php
 	include_once("Model/Usuario.php");
-	include_once("Model/Consumidor.php");
+	include_once("Model/Persona.php");
 
 	session_start();
 	if(!isset($_SESSION["usuario"]))
@@ -8,10 +8,8 @@
 
 	$usuario = $_SESSION["usuario"];
 	$aux = null;
-	switch($usuario->getRol()) {
-		case 'Consumidor':
-			$aux = $usuario->consumidor();
-			break;
+	if($usuario->getRol() == 'Consumidor' || $usuario->getRol() == 'Conciliador') {
+		$aux = $usuario->persona();
 	}
 	$_GET["title"] = "Inicio";
 ?>
@@ -32,7 +30,7 @@
 						<?php include("header.php"); ?>
 						<div class="card-content">
 							<div class="content has-text-centered">
-								<?php if($usuario->getRol() == 'Consumidor') { ?>
+								<?php if($usuario->getRol() == 'Consumidor' || $usuario->getRol() == 'Conciliador') { ?>
 								<h1>Bienvenid<?php echo $aux->getSexo() == "Mujer" ? "a" : "o" ?> <?php echo $aux->getNombre() . ' ' . $aux->getAppaterno() ?></h1>
 								<?php } else if($usuario->getRol() == 'Proveedor') { ?>
 								<h1>Bienvenido Proveedor</h1>
