@@ -32,7 +32,7 @@
 						<?php include("../header.php"); ?>
 						<div class="card-content">
 							<div class="content">
-								<form action="../Controller/TestController.php" method="post" enctype="multipart/form-data">
+								<form action="../Controller/InconformidadController.php" method="post" enctype="multipart/form-data">
 									<input type="hidden" name="action" value="store">
 									<div class="columns">
 										<div class="column is-one-third">

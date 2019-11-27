@@ -119,6 +119,22 @@
 			return $direccion;
 	   	}
 
+	   	public function inconformidades() {
+	    	$con = new Connection();
+	    	$con = $con->getConnection();
+	    	$sql = "SELECT * FROM inconformidad where proveedor_id = $this->id and (status = 'Aprovada' || status = 'En proceso')";
+	    	$rs = $con->query($sql);
+	    	$inconformidades = [];
+			if ($rs->num_rows > 0)
+				while($row = $rs->fetch_assoc()) {
+					$inconformidad = new Inconformidad();
+			    	$inconformidad->put($row["id"], $row["status"], $row["estado"], $row["fecha"], $row["tipo"], $row["divisa"], $row["costo"], $row["modo"], $row["descripcion"], $row["consumidor_id"], $row["proveedor_id"]);
+					$inconformidades[] = $inconformidad;
+				}
+			$con->close();
+			return $inconformidades;
+	   	}
+
 	    public function __toString() {
 	    	return "Proveedor[$this->id] {<br>\trazon: " . $this->razon . "<br>\tgiro: " . $this->giro . "<br>\tusuario_id: " . $this->usuario_id . "<br>}<br>";
 	    }

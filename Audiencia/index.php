@@ -31,7 +31,7 @@
 		default:
 			break;
 	}
-	$_GET["title"] = "Inconformidades";
+	$_GET["title"] = "Audiencias";
 ?>
 
 <!DOCTYPE html>
@@ -56,8 +56,8 @@
 								  			<tr>
 								  				<th>ID</th>
 								  				<th>Fecha</th>
-								  				<th>Lugar</th>
 								  				<th><?php echo $usuario->getRol() != "Proveedor" ? "Proveedor" : "Consumidor" ?></th>
+								  				<th>Lugar</th>
 								  				<th>Status</th>
 								  				<th>Acción</th>
 								  			</tr>

@@ -100,7 +100,7 @@
 	   	public static function get() {
 	    	$con = new Connection();
 	    	$con = $con->getConnection();
-	    	$sql = "SELECT * FROM inconformidad";
+	    	$sql = "SELECT * FROM inconformidad where status = 'No Aprovada' or status = 'Aprovada'";
 	    	$rs = $con->query($sql);
 	    	$inconformidades = [];
 			if ($rs->num_rows > 0)
@@ -125,12 +125,12 @@
 			$con->close();
 	    }
 
-	    public function update($estado, $fecha, $tipo, $divisa, $costo, $modo, $descripcion, $proveedor_id) {
+	    public function update($status) {
 	    	$con = new Connection();
 	    	$con = $con->getConnection();
-	    	$sql = "UPDATE inconformidad SET estado = ?, fecha = ?, tipo = ?, divisa = ?, costo = ?, modo = ?, descripcion = ?, proveedor_id = ? WHERE id = ?";
+	    	$sql = "UPDATE inconformidad SET status = ? WHERE id = ?";
 	    	$aux = $con->prepare($sql);
-	    	$aux->bind_param("ssssdssii", $estado, $fecha, $tipo, $divisa, $costo, $modo, $descripcion, $proveedor_id, $this->id);
+	    	$aux->bind_param("si", $status, $this->id);
 	    	$aux->execute();
 		    echo $con->error;
 			$con->close();
@@ -155,6 +155,22 @@
 	    	$proveedor->find($this->proveedor_id);
 	    	return $proveedor;
 	    }
+
+	   	public function documentos() {
+	    	$con = new Connection();
+	    	$con = $con->getConnection();
+	    	$sql = "SELECT * FROM documento where inconformidad_id = $this->id";
+	    	$rs = $con->query($sql);
+	    	$documentos = [];
+			if ($rs->num_rows > 0)
+				while($row = $rs->fetch_assoc()) {
+					$documento = new Documento();
+			    	$documento->put($row["id"], $row["url"], $row["inconformidad_id"]);
+					$documentos[] = $documento;
+				}
+			$con->close();
+			return $documentos;
+	   	}
 
 	    public function __toString() {
 	    	return "Inconformidad[$this->id] {<br>status: " . $this->status . "<br>estado: " . $this->estado . "<br>fecha: " . $this->fecha . "<br>tipo: " . $this->tipo . "<br>divisa: " . $this->divisa . "<br>costo: " . $this->costo . "<br>modo: " . $this->modo . "<br>descripcion: " . $this->descripcion . "<br>consumidor_id: " . $this->consumidor_id . "<br>proveedor_id: " . $this->proveedor_id . "<br>}<br>";
