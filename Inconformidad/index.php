@@ -1,6 +1,8 @@
 <?php
 	include_once("../Model/Usuario.php");
 	include_once("../Model/Persona.php");
+	include_once("../Model/Proveedor.php");
+	include_once("../Model/Inconformidad.php");
 
 	session_start();
 	if(!isset($_SESSION["usuario"]))
@@ -8,10 +10,25 @@
 
 	$usuario = $_SESSION["usuario"];
 	
-	if($usuario->getRol() != "Administrador")
+	if($usuario->getRol() == "Administrador")
 		header("Location: /proj");
 
-	$_GET["title"] = "Consumidores";
+	$aux = null;
+	switch($usuario->getRol()) {
+		case 'Consumidor':
+			$aux = $usuario->persona();
+			break;
+		case 'Conciliador':
+			$aux = $usuario->persona();
+			break;
+		case 'Proveedor':
+			$aux = $usuario->proveedor();
+			break;
+		default:
+			break;
+	}
+
+	$_GET["title"] = "Inconformidades";
 ?>
 
 <!DOCTYPE html>
@@ -35,27 +52,31 @@
 								  		<thead>
 								  			<tr>
 								  				<th>ID</th>
-								  				<th>CURP</th>
-								  				<th>Nombre</th>
-								  				<th>Correo Electrónico</th>
+								  				<th>Fecha</th>
+								  				<th>Lugar</th>
+								  				<th style="width: 20%;">Proveedor</th>
+								  				<th>Status</th>
 								  				<th>Acción</th>
 								  			</tr>
 								  		</thead>
 								  		<tbody>
-								  			<?php foreach(Persona::Consumidores() as $consumidor) { ?>
+								  			<?php foreach($aux->inconformidades() as $inconformidad) { ?>
 							  				<tr>
-							  					<td><?php echo $consumidor->getId() ?></td>
-							  					<td><?php echo $consumidor->getCurp() ?></td>
-							  					<td><?php echo $consumidor->getNombre() . " " . $consumidor->getAppaterno() ?></td>
-							  					<td><?php echo $consumidor->usuario()->getEmail() ?></td>
+							  					<td><?php echo $inconformidad->getId() ?></td>
+							  					<td><?php echo date("d/m/Y", strtotime($inconformidad->getFecha())) ?></td>
+							  					<td><?php echo $inconformidad->getEstado() ?></td>
+							  					<td><?php echo $inconformidad->proveedor()->getRazon() ?></td>
+							  					<td><?php echo $inconformidad->getStatus() ?></td>
 							  					<td class="has-text-centered">
-							  						<a class="button is-link is-small" href="view.php?id=<?php echo $consumidor->getId() ?>"><p><i class="far fa-eye"></i> Ver</p></a>
-							  						<a class="button is-warning is-small" href="edit.php?id=<?php echo $consumidor->getId() ?>"><p><i class="fas fa-pencil-alt"></i> Editar</p></a>
+							  						<a class="button is-link is-small" href="view.php?id=<?php echo $inconformidad->getId() ?>"><p><i class="far fa-eye"></i> Ver</p></a>
+													<?php if($inconformidad->getStatus() == "No Aprovada") { ?>
+							  						<a class="button is-warning is-small" href="edit.php?id=<?php echo $inconformidad->getId() ?>"><p><i class="fas fa-pencil-alt"></i> Editar</p></a>
 													<form action="../Controller/ConsumidorController.php" method="post" style="display: inline;">
 														<input type="hidden" name="action" value="destroy">
-														<input type="hidden" name="id" value="<?php echo $consumidor->getId() ?>">
 							  							<button type="submit" class="button is-danger is-small"><p><i class="fas fa-times"></i> Eliminar</p></button>
-						  							</form>
+														<input type="hidden" name="id" value="<?php echo $inconformidad->getId() ?>">
+					  								</form>
+													<?php } ?>
 							  					</td>
 							  				</tr>
 								  			<?php } ?>

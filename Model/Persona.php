@@ -185,6 +185,22 @@
 			return $direccion;
 	   	}
 
+	   	public function inconformidades() {
+	    	$con = new Connection();
+	    	$con = $con->getConnection();
+	    	$sql = "SELECT * FROM inconformidad where consumidor_id = $this->id";
+	    	$rs = $con->query($sql);
+	    	$inconformidades = [];
+			if ($rs->num_rows > 0)
+				while($row = $rs->fetch_assoc()) {
+					$inconformidad = new Inconformidad();
+			    	$inconformidad->put($row["id"], $row["status"], $row["estado"], $row["fecha"], $row["tipo"], $row["divisa"], $row["costo"], $row["modo"], $row["descripcion"], $row["consumidor_id"], $row["proveedor_id"]);
+					$inconformidades[] = $inconformidad;
+				}
+			$con->close();
+			return $inconformidades;
+	   	}
+
 	    public function __toString() {
 	    	return "Persona[$this->id] {<br>\tcurp: " . $this->curp . "<br>\tnombre: " . $this->nombre . "<br>\tappaterno: " . $this->appaterno . "<br>\tapmaterno: " . $this->apmaterno . "<br>\tsexo: " . $this->sexo . "<br>\tfecha: " . $this->fecha . "<br>\tusuario_id: " . $this->usuario_id . "<br>}<br>";
 	    }

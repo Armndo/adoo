@@ -92,7 +92,7 @@
 	    	return $this->cp;
 	    }
 
-	    public function getUsuario_id() {
+	    public function getPersona_id() {
 	    	return $this->persona_id;
 	    }
 
@@ -164,7 +164,7 @@
 	    }
 
 	    public function __toString() {
-	    	return "Direccion[$this->id] {<br>\tcalle: " . $this->calle . "<br>\tnumext: " . $this->numext . "<br>\tnumint: " . $this->numint . "<br>\testado: " . $this->estado . "<br>\tmunicipio: " . $this->municipio . "<br>\tcolonia: " . $this->colonia . "<br>\tpersona_id: " . $this->persona_id . "<br>\tcp: " . $this->cp . "<br>\tproveedor_id: " . $this->proveedor_id . "<br>}<br>";
+	    	return "Direccion[$this->id] {<br>\tcalle: " . $this->calle . "<br>\tnumext: " . $this->numext . "<br>\tnumint: " . $this->numint . "<br>\testado: " . $this->estado . "<br>\tmunicipio: " . $this->municipio . "<br>\tcolonia: " . $this->colonia . "<br>\tcp: " . $this->cp . "<br>\tpersona_id: " . $this->persona_id . "<br>\tproveedor_id: " . $this->proveedor_id . "<br>}<br>";
 	    }
 
 	}
