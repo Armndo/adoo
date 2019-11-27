@@ -113,6 +113,22 @@
 			return $inconformidades;
 	   	}
 
+	   	public static function aprovadas() {
+	    	$con = new Connection();
+	    	$con = $con->getConnection();
+	    	$sql = "SELECT * FROM inconformidad where status = 'Aprovada' and id not in(select inconformidad_id from audiencia)";
+	    	$rs = $con->query($sql);
+	    	$inconformidades = [];
+			if ($rs->num_rows > 0)
+				while($row = $rs->fetch_assoc()) {
+					$inconformidad = new Inconformidad();
+			    	$inconformidad->put($row["id"], $row["status"], $row["estado"], $row["fecha"], $row["tipo"], $row["divisa"], $row["costo"], $row["modo"], $row["descripcion"], $row["consumidor_id"], $row["proveedor_id"]);
+					$inconformidades[] = $inconformidad;
+				}
+			$con->close();
+			return $inconformidades;
+	   	}
+
 	    public function commit() {
 	    	$con = new Connection();
 	    	$con = $con->getConnection();

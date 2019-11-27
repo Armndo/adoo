@@ -3,6 +3,7 @@
 	include_once("../Model/Persona.php");
 	include_once("../Model/Proveedor.php");
 	include_once("../Model/Inconformidad.php");
+	include_once("../Model/Audiencia.php");
 
 	session_start();
 	if(!isset($_SESSION["usuario"]))
@@ -14,19 +15,19 @@
 		header("Location: /proj");
 
 	$aux = null;
-	$inconformidades = null;
+	$audiencias = null;
 	switch($usuario->getRol()) {
 		case 'Consumidor':
 			$aux = $usuario->persona();
-			$inconformidades = $aux->inconformidades();
+			$audiencias = $aux->audiencias();
 			break;
 		case 'Conciliador':
 			$aux = $usuario->persona();
-			$inconformidades = Inconformidad::get();
+			$audiencias = Audiencia::get();
 			break;
 		case 'Proveedor':
 			$aux = $usuario->proveedor();
-			$inconformidades = $aux->inconformidades();
+			$audiencias = $aux->audiencias();
 			break;
 		default:
 			break;
@@ -56,33 +57,41 @@
 								  			<tr>
 								  				<th>ID</th>
 								  				<th>Fecha</th>
-								  				<th><?php echo $usuario->getRol() != "Proveedor" ? "Proveedor" : "Consumidor" ?></th>
-								  				<th>Lugar</th>
-								  				<th>Status</th>
+								  				<th>ID Inconformidad</th>
+								  				<th>Consumidor</th>
+								  				<th>Proveedor</th>
+								  				<th>Conciliador</th>
 								  				<th>Acción</th>
 								  			</tr>
 								  		</thead>
 								  		<tbody>
-								  			<?php foreach($inconformidades as $inconformidad) { ?>
+								  			<?php foreach($audiencias as $audiencia) { ?>
+								  			<?php $void = 0; ?>
 							  				<tr>
-							  					<td><?php echo $inconformidad->getId() ?></td>
-							  					<td><?php echo date("d/m/Y", strtotime($inconformidad->getFecha())) ?></td>
-							  					<td><?php echo $inconformidad->getEstado() ?></td>
-							  					<?php if($usuario->getRol() != "Proveedor") { ?>
-							  					<td><?php echo $inconformidad->proveedor()->getRazon() ?></td>
-							  					<?php } else { ?>
-							  					<td><?php echo $inconformidad->consumidor()->getNombre() . " " . $inconformidad->consumidor()->getAppaterno() ?></td>
-							  					<?php } ?>
-							  					<td><?php echo $inconformidad->getStatus() ?></td>
+							  					<td><?php echo $audiencia->getId() ?></td>
+							  					<td><?php echo date("d/m/Y", strtotime($audiencia->getFecha())) . " " . date("h:i", strtotime($audiencia->getHora())) ?></td>
+							  					<td><?php echo $audiencia->inconformidad()->getId() ?></td>
+							  					<td><?php $cons = $audiencia->inconformidad()->consumidor(); echo $cons->getNombre() . " " . $cons->getAppaterno() ?></td>
+							  					<td><?php $prov = $audiencia->inconformidad()->proveedor(); echo $prov->getRazon() ?></td>
+							  					<td><?php $conc = $audiencia->conciliador(); echo $conc->getNombre() . " " . $conc->getAppaterno() ?></td>
 							  					<td class="has-text-centered">
-							  						<a class="button is-link is-small" href="view.php?id=<?php echo $inconformidad->getId() ?>"><p><i class="far fa-eye"></i> Ver</p></a>
-													<?php if(($inconformidad->getStatus() == "No Aprovada" || $inconformidad->getStatus() == "Rechazada") && $usuario->getRol() == "Consumidor") { ?>
-													<form action="../Controller/InconformidadController.php" method="post" style="display: inline;">
-														<input type="hidden" name="action" value="destroy">
-														<input type="hidden" name="id" value="<?php echo $inconformidad->getId() ?>">
-							  							<button type="submit" class="button is-danger is-small"><p><i class="fas fa-times"></i> Eliminar</p></button>
-					  								</form>
-													<?php } ?>
+							  						<?php if($usuario->getRol() == "Conciliador") { ?>
+							  						<a class="button is-link is-small" href="view.php?id=<?php echo $audiencia->getId() ?>"><p><i class="far fa-eye"></i> Ver</p></a>
+							  						<a class="button is-warning is-small" href="edit.php?id=<?php echo $audiencia->getId() ?>"><p><i class="fas fa-pencil-alt"></i> Editar</p></a>
+							  						<?php } else {
+							  							$void = 1;
+							  						}
+							  							$hoy = strtotime(date("Y-m-d"));
+							  							$fecha = strtotime($audiencia->getFecha());
+							  							$ahora = strtotime(date("h:i:s"));
+							  							$hora = strtotime(date($audiencia->getHora()));
+							  							$en10 = $hora + 600;
+							  							if($hoy == $fecha && $ahora >= $hora && $ahora <= $en10) {
+					  								?>
+						  							<a href="../Mensaje/?audiencia_id=<?php echo $audiencia->getId() ?>" class="button is-success is-small"><p><i class="fas fa-check"></i> Participar</p></a>
+							  						<?php } elseif($void) { ?>
+							  							<p>N/A</p>
+						  							<?php } ?>
 							  					</td>
 							  				</tr>
 								  			<?php } ?>

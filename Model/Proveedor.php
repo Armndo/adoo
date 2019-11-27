@@ -135,6 +135,22 @@
 			return $inconformidades;
 	   	}
 
+	   	public function audiencias() {
+	    	$con = new Connection();
+	    	$con = $con->getConnection();
+	    	$sql = "SELECT audiencia.id as id, audiencia.status as status, audiencia.fecha as fecha, hora, inconformidad_id, conciliador_id FROM audiencia join inconformidad on inconformidad.id = inconformidad_id join proveedor on proveedor.id = proveedor_id where proveedor.id = $this->id";
+	    	$rs = $con->query($sql);
+	    	$audiencias = [];
+			if ($rs->num_rows > 0)
+				while($row = $rs->fetch_assoc()) {
+					$audiencia = new Audiencia();
+			    	$audiencia->put($row["id"], $row["status"], $row["fecha"], $row["hora"], $row["inconformidad_id"], $row["conciliador_id"]);
+					$audiencias[] = $audiencia;
+				}
+			$con->close();
+			return $audiencias;
+	   	}
+
 	    public function __toString() {
 	    	return "Proveedor[$this->id] {<br>\trazon: " . $this->razon . "<br>\tgiro: " . $this->giro . "<br>\tusuario_id: " . $this->usuario_id . "<br>}<br>";
 	    }
